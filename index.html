@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tribute to Goddess Divine, your findom queen. Spoil her through Throne, PayPal, CashApp, and more.">
+    <meta name="keywords" content="findom, goddess, tribute, financial domination">
+    <meta name="author" content="Devoted Follower">
+    <meta name="robots" content="index, follow">
+    <title>Princess Spizy</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --pink-accent: #ff69b4;
+            --dark-bg: #1a1a1a;
+            --dark-secondary: #282a36;
+            --text-primary: #f3f3f3;
+            --text-secondary: #a1a1a1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            /* Smooth scrolling for anchor links */
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #2d2d2d 100%);
+            height: 100vh;
+            max-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 40px 20px;
+            background: #363642;
+            overflow-y: hidden;
+            animation: gradientAnimation 15s ease infinite;
+            /* Dynamic background animation */
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            height: 100%;
+            max-height: 100%;
+            overflow-y: scroll;
+            background: #282a36;
+            border-radius: 20px;
+        }
+
+        /* Info Container */
+        .info-container {
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1618005182380-4d8f8438790e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+            background: #ae4879;
+            border-radius: 0;
+            padding: 2rem;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 26, 0.7);
+            z-index: 1;
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-pic {
+            border: 6px solid var(--pink-accent);
+            border-radius: 50%;
+            width: 140px;
+            height: 140px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            object-fit: cover;
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.5), inset 0 0 10px rgba(255, 105, 180, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-pic:hover {
+            transform: translateX(-50%) rotate(10deg);
+            /* Slight rotation on hover */
+            box-shadow: 0 0 35px rgba(255, 105, 180, 0.7), inset 0 0 15px rgba(255, 105, 180, 0.5);
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(45deg, var(--pink-accent), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .bio {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Links Container */
+        .links-container {
+            background: var(--dark-secondary);
+            border-radius: 0;
+            padding: 1rem 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .link-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 1rem 2rem;
+            background: #363642;
+            border: 1px solid transparent;
+            border-radius: 200px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            opacity: 0;
+            /* For staggered animation */
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Staggered animation delays for link items */
+        .link-item:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .link-item:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .link-item:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .link-item:nth-child(4) {
+            animation-delay: 0.5s;
+        }
+
+        .link-item:nth-child(5) {
+            animation-delay: 0.6s;
+        }
+
+        .inside-item-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .arrow-icon {
+            flex-shrink: 0;
+        }
+
+        .link-item:hover {
+            background: #3d3d3d;
+            border-color: var(--pink-accent);
+            transform: translateY(-5px);
+        }
+
+        .link-item svg {
+            width: 34px;
+            height: 34px;
+            stroke: var(--pink-accent);
+            flex-shrink: 0;
+        }
+        
+        .X-image {
+            width: 40px;
+            height: 40px;
+            background: var(--pink-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .link-item img {
+            object-fit: contain;
+            scale: 0.6;
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .link-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Fade Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--pink-accent);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+        /* Desktop Layout */
+        @media (min-width: 968px) {
+            .main-container {
+                display: flex;
+                gap: 2rem;
+                padding: 3rem 2rem;
+            }
+
+            .info-container,
+            .links-container {
+                flex: 1;
+                min-height: 600px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .links-container {
+                justify-content: flex-start;
+            }
+
+            .info-container {
+                padding: 3rem;
+            }
+
+            .profile-pic {
+                width: 160px;
+                height: 160px;
+            }
+
+            .title {
+                font-size: 3rem;
+            }
+
+            .bio {
+                font-size: 1.1rem;
+            }
+
+            .link-item:hover {
+                transform: translateX(8px);
+            }
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 767px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .info-container {
+                padding: 1.5rem;
+            }
+
+            .profile-pic {
+                width: 120px;
+                height: 120px;
+            }
+
+            .title {
+                font-size: 2.25rem;
+            }
+
+            .bio {
+                font-size: 0.95rem;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* Touch Devices */
+        @media (hover: none) {
+            .link-item:active {
+                background: #3d3d3d;
+                border-color: var(--pink-accent);
+                transform: scale(0.98);
+            }
+
+            .profile-pic:active {
+                transform: scale(1.05);
+                box-shadow: 0 0 35px rgba(255, 105, 180, 0.7), inset 0 0 15px rgba(255, 105, 180, 0.5);
+            }
+        }
+
+        .info-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 200px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            margin-top: 20px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .info-button {
+            background: #363642;
+            border: 2px solid var(--pink-accent);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #fff;
+
+        }
+
+        .info-button:hover {
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+        }
+
+        .info-button svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Preload Images -->
+    <div class="preload" style="display: none;">
+        <img src="https://pbs.twimg.com/profile_images/1645649868839620614/M9NcKC1l_400x400.jpg" alt="">
+        <img src="https://images.unsplash.com/photo-1618005182380-4d8f8438790e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="">
+    </div>
+
+    <div class="main-container">
+        <!-- Info Container -->
+        <section class="info-container fade-in">
+            <div class="info-content">
+                <img src="https://pbs.twimg.com/profile_images/1645649868839620614/M9NcKC1l_400x400.jpg" alt="Goddess Divine Profile" class="profile-pic">
+                <h1 class="title">Princess Spizy</h1>
+                <p class="bio">i get paid to play with men | petite 🇸🇬 chinese asian brat | age verified 🪬</p>
+            </div>
+            <div class="info-buttons">
+                <button class="info-button" aria-label="About Goddess Divine" data-popup="about">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+
+                </button>
+                <button class="info-button" aria-label="Rules for Tributes" data-popup="rules">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+
+                </button>
+                <button class="info-button" aria-label="Goddess Divine's Wishlist" data-popup="wishlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Links Container -->
+        <section class="links-container fade-in" style="animation-delay: 0.2s;">
+            <a href="https://throne.com/cupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
+                <div class="inside-item-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                    </svg>
+
+                    <div class="link-content">
+                        <div class="link-title">Throne</div>
+                        <div class="link-description">Checkout my list :))</div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <span class="sr-only">Opens in a new tab</span>
+            </a>
+            <a href="https://paypal.com" target="_blank" rel="noopener noreferrer" class="link-item">
+                <div class="inside-item-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </svg>
+                    <div class="link-content">
+                        <div class="link-title">PayPal</div>
+                        <div class="link-description"></div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <span class="sr-only">Opens in a new tab</span>
+            </a>
+            <a href="https://www.tributify.com/godcupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
+                <div class="inside-item-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+                    </svg>
+
+                    <div class="link-content">
+                        <div class="link-title">Tributify</div>
+                        <div class="link-description">Buy me smt!!</div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <span class="sr-only">Opens in a new tab</span>
+            </a>
+            <a href="https://www.loyalfans.com/cupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
+                <div class="inside-item-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                    <div class="link-content">
+                        <div class="link-title">Loyal Fans</div>
+                        <div class="link-description"></div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <span class="sr-only">Opens in a new tab</span>
+            </a>
+            <a href="https://x.com/cupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
+                <div class="inside-item-container">
+                    <div class="X-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/X_logo_2023.svg/300px-X_logo_2023.svg.png">
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">X</div>
+                        <div class="link-description">Follow me!!</div>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon" style="width: 20px; height: 20px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+                <span class="sr-only">Opens in a new tab</span>
+            </a>
+        </section>
+    </div>
+
+    <!-- Back to Top Button -->
+    <a href="#top" class="back-to-top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 24px; height: 24px;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+    </a>
+
+    <!-- Performance Optimizations and New Features -->
+    <script>
+        // Lazy load images
+        document.addEventListener('DOMContentLoaded', () => {
+            const images = document.querySelectorAll('img[data-src]');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+            images.forEach(img => observer.observe(img));
+
+            // Back to Top Button Logic
+            const backToTopButton = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                } else {
+                    backToTopButton.classList.remove('show');
+                }
+            });
+
+            // Smooth scroll for back to top
+            backToTopButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
