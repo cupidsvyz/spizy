@@ -44,7 +44,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            padding: 40px 20px;
+            padding: 30px 20px;
             background: #363642;
             overflow-y: hidden;
             animation: gradientAnimation 15s ease infinite;
@@ -120,7 +120,6 @@
         }
 
         .profile-pic:hover {
-            transform: translateX(-50%) rotate(10deg);
             /* Slight rotation on hover */
             box-shadow: 0 0 35px rgba(255, 105, 180, 0.7), inset 0 0 15px rgba(255, 105, 180, 0.5);
         }
@@ -148,7 +147,6 @@
             background: var(--dark-secondary);
             border-radius: 0;
             padding: 1rem 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .link-item {
@@ -226,6 +224,7 @@
             justify-content: center;
             border-radius: 50%;
         }
+
 
         .link-item img {
             object-fit: contain;
@@ -331,6 +330,10 @@
             .link-item:hover {
                 transform: translateX(8px);
             }
+
+            .come-serve {
+                max-width: 300px;
+            }
         }
 
         /* Mobile Layout */
@@ -341,6 +344,15 @@
 
             .info-container {
                 padding: 1.5rem;
+                position: relative;
+                background: url('https://images.unsplash.com/photo-1618005182380-4d8f8438790e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+                background: #ae4879;
+                border-radius: 0;
+                text-align: center;
+                overflow: hidden;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+                align-items: center;
+                justify-content: center;
             }
 
             .profile-pic {
@@ -361,6 +373,10 @@
                 right: 20px;
                 width: 40px;
                 height: 40px;
+            }
+
+            .come-serve {
+                max-width: 100%;
             }
         }
 
@@ -395,12 +411,13 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            /* Center the buttons */
             max-width: 200px;
-            margin-left: 50%;
-            transform: translateX(-50%);
-            margin-top: 20px;
+            margin: 20px auto 0;
+            /* Center horizontally with auto margins */
             z-index: 2;
+            gap: 20px;
             position: relative;
         }
 
@@ -417,6 +434,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             color: #fff;
 
+
         }
 
         .info-button:hover {
@@ -426,6 +444,364 @@
         .info-button svg {
             width: 24px;
             height: 24px;
+        }
+
+        .come-serve {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            margin-top: 20px;
+            z-index: 2;
+            position: relative;
+            background: var(--pink-accent);
+            padding: 7px 30px;
+            border-radius: 100px;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .come-serve h2 {
+            font-size: 23px;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+        }
+
+        .come-serve p {
+            margin-top: -7px;
+        }
+
+        /* Popup Container */
+        .popup {
+            position: fixed;
+            bottom: -100vh;
+            /* Start completely below the screen */
+            left: 0;
+            right: 0;
+            background: var(--dark-secondary);
+            padding: 2rem;
+            height: 0;
+            /* Start with zero height */
+            overflow-y: auto;
+            z-index: 1000;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.5s;
+            /* Smooth easing */
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            visibility: hidden;
+        }
+
+        .popup.show {
+            height: 50vh;
+            /* Slide up to cover the bottom half */
+            bottom: 0;
+            /* Move to the bottom of the screen */
+            visibility: visible;
+            /* Show when sliding up */
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear;
+            /* Smooth easing */
+        }
+
+        .popup.full {
+            height: 100vh;
+            /* Expand to full screen when interacted */
+            bottom: 0;
+            visibility: visible;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear;
+            /* Smooth easing */
+        }
+
+        .popup-content {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            /* Smooth content fade */
+        }
+
+        .popup.show .popup-content,
+        .popup.full .popup-content {
+            opacity: 1;
+            /* Fade in content when popup is visible */
+        }
+
+        .close-popup {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease-in-out;
+            /* Smooth hover effect */
+            z-index: 9999;
+        }
+
+        .close-popup:hover {
+            transform: scale(1.1);
+            /* Subtle scale on hover */
+        }
+
+        .close-popup svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--pink-accent);
+            transition: stroke 0.2s ease-in-out;
+            /* Smooth color transition */
+        }
+
+        .close-popup:hover svg {
+            stroke: #ffffff;
+            /* Change color on hover */
+        }
+
+        .popup h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--pink-accent);
+            transform: translateY(10px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+            /* Smooth slide-in */
+        }
+
+        .popup.show h2,
+        .popup.full h2 {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .popup p,
+        .popup ul {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out 0.1s;
+            /* Staggered slide-in */
+        }
+
+        .popup.show p,
+        .popup.show ul,
+        .popup.full p,
+        .popup.full ul {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .popup ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .popup ul li {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .popup ul li::before {
+            content: '•';
+            color: var(--pink-accent);
+            position: absolute;
+            left: -1rem;
+        }
+
+        @media (min-width: 768px) {
+            .popup {
+                padding: 3rem;
+            }
+
+            .popup h2 {
+                font-size: 2rem;
+            }
+
+            .popup p,
+            .popup ul li {
+                font-size: 1.1rem;
+            }
+        }
+
+        .inside-popup-div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        /* Form Popup Specific Styles */
+        .form-popup {
+            position: fixed;
+            bottom: -100vh;
+            left: 0;
+            right: 0;
+            background: var(--dark-secondary);
+            padding: 2rem;
+            height: 0;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.5s;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            visibility: hidden;
+        }
+
+        .form-popup.show {
+            height: 50vh;
+            bottom: 0;
+            visibility: visible;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear;
+        }
+
+        .form-popup.full {
+            height: 100vh;
+            bottom: 0;
+            visibility: visible;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear;
+        }
+
+        .form-popup-content {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .form-popup.show .form-popup-content,
+        .form-popup.full .form-popup-content {
+            opacity: 1;
+        }
+
+        .form-step {
+            display: none;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+        }
+
+        .form-step.active {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .form-step h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--pink-accent);
+            margin-bottom: 1rem;
+        }
+
+        .form-step p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-step input,
+        .form-step select,
+        .form-step textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: #363642;
+            border: 2px solid var(--pink-accent);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-step input:focus,
+        .form-step select:focus,
+        .form-step textarea:focus {
+            outline: none;
+            border-color: #ffffff;
+        }
+
+        .form-step textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-step .error {
+            color: #ff4040;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .form-step .error.show {
+            display: block;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .form-button {
+            padding: 0.75rem 1.5rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .form-button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .form-button:hover:not(:disabled) {
+            background: #ff85c0;
+            transform: scale(1.05);
+        }
+
+        .form-button.back {
+            background: #363642;
+            border: 2px solid var(--pink-accent);
+        }
+
+        .form-button.back:hover:not(:disabled) {
+            background: #4a4a5a;
+        }
+
+        .inside-form-div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-popup {
+                padding: 3rem;
+            }
+
+            .form-step h2 {
+                font-size: 2rem;
+            }
+
+            .form-step p {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -464,15 +840,19 @@
                     </svg>
                 </button>
             </div>
+            <div class="come-serve" id="come-serve">
+                <h2>Come serve</h2>
+                <p>Let me put u in ur place :)</p>
+            </div>
         </section>
 
         <!-- Links Container -->
         <section class="links-container fade-in" style="animation-delay: 0.2s;">
             <a href="https://throne.com/cupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
                 <div class="inside-item-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
-                    </svg>
+                    <div class="X-image throne">
+                        <img src="https://panels.twitch.tv/panel-212934095-image-620a5538-34a4-43ab-880a-c90a89310b70">
+                    </div>
 
                     <div class="link-content">
                         <div class="link-title">Throne</div>
@@ -554,6 +934,172 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
         </svg>
     </a>
+    <div class="popup" id="about-popup">
+        <div class="popup-content">
+            <div class="inside-popup-div">
+                <h2>About me</h2>
+                <button class="close-popup" aria-label="Close About Popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p>I’m Princess Spizy, your petite singaporean chinese brat! I stumbled into this world guys were willing to spoil me just for existing. Like, duh, I'm so hot, who wouldn’t want to worship someone as hot as me? I love the rush of controlling wallets and watching subs beg to please me. Age-verified and legit, I’m here to bully you into submission until your wallet is completely drained. Ready to fall for me?</p>
+            <ul>
+                <li>Nationality: singaporean chinese</li>
+                <li>Obsession: money</li>
+                <li>Fav colour: pink!!</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="popup" id="rules-popup">
+        <div class="popup-content">
+            <div class="inside-popup-div">
+                <h2>Rules for tributes</h2>
+                <button class="close-popup" aria-label="Close Rules Popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p>Listen up, losers, if you wanna serve me, you better come correct. Send a tribute <b>before</b> you even think about DMing me — $50 minimum, no excuses. Use Throne, PayPal, or Tributify, and include a cute lil’ message saying why you’re obsessed with me. I expect loyalty, consistency, and zero whining. Approach with respect, know your place, and don’t waste my time with small talk. I love seeing big sends, creative gifts, and subs who go all out to make me smile. Sessions? Only for my faves who prove they’re serious. Keep up regular tributes, follow my instructions, and maybe I’ll notice you. Disobey, and you’re out. Got it? Now get to work.</p>
+            <ul>
+                <li>Tribute first: $50+ via approved platforms</li>
+                <li>Always include a respectful message</li>
+                <li>Be consistent or get ignored</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="popup" id="wishlist-popup">
+        <div class="popup-content">
+            <div class="inside-popup-div">
+                <h2>My payment methods</h2>
+                <button class="close-popup" aria-label="Close Wishlist Popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <p>Spoiling me is your new favorite hobby, and my Throne wishlist is where you start. It’s packed with cute, luxe, and fun stuff that screams <b>me</b> — from designer bags to adorable trinkets. Every gift you send shows you’re serious about making your Princess happy, and trust me, I notice the good boys who go big. I prefer Throne for wishlist vibes, but PayPal and Tributify work for cash tributes. Want to stand out? Pick something extra special or surprise me with a custom gift. I update my list all the time, so keep checking to stay in my good graces. Funding my manicures, vacays, or shopping sprees? Even better. Step up, send, and watch me glow.</p>
+            <ul>
+                <li>Main platform: Throne (in the links below)</li>
+                <li>Cash tributes: PayPal, Tributify</li>
+                <li>Pro tip: Surprise me with something extra :)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Add to HTML before closing </body> tag -->
+    <div class="form-popup" id="form-popup">
+        <div class="form-popup-content">
+            <div class="inside-form-div">
+                <h2>Application to Serve</h2>
+                <button class="close-popup" aria-label="Close Form Popup">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="form-step" data-step="1">
+                <h2>Ready to Serve?</h2>
+                <p>So, you think you’ve got what it takes to serve Princess Spizy? This isn’t a game, so come correct. I expect loyalty, respect, and *generous* tributes—$50 minimum to even get my attention. You’ll need to prove you’re serious with every step of this application. Only the best get to kneel at my feet, so don’t waste my time. Ready to start? Hit the button and show me you mean it.</p>
+                <div class="form-buttons">
+                    <button class="form-button" onclick="startForm()">Start Application</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="2">
+                <h2>Basic Info</h2>
+                <p>Tell me who you are, sub. I need your name and contact so I know who’s begging to serve me.</p>
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <p class="error" id="step2-error">Please fill out all fields correctly.</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(2)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="3">
+                <h2>Your Experience</h2>
+                <p>Spill it—have you served a domme before? What’s your deal with findom?</p>
+                <select id="experience" required>
+                    <option value="" disabled selected>Select Experience</option>
+                    <option value="new">New to Findom</option>
+                    <option value="some">Some Experience</option>
+                    <option value="experienced">Experienced Sub</option>
+                </select>
+                <textarea id="experience-details" placeholder="Describe your experience (100-300 words)" required></textarea>
+                <p class="error" id="step3-error">Please select an option and provide details (100-300 words).</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(3)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="4">
+                <h2>Your Commitment</h2>
+                <p>How often are you ready to tribute? Be real, I don’t have time for flakes.</p>
+                <select id="tribute-frequency" required>
+                    <option value="" disabled selected>Select Frequency</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="biweekly">Bi-Weekly</option>
+                    <option value="monthly">Monthly</option>
+                </select>
+                <input type="number" id="tribute-amount" placeholder="Average Tribute Amount ($)" min="50" required>
+                <p class="error" id="step4-error">Please select a frequency and enter an amount ($50+).</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(4)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="5">
+                <h2>Your Limits</h2>
+                <p>What’s off-limits for you? Don’t bore me, but I need to know.</p>
+                <textarea id="limits" placeholder="Describe your limits or boundaries" required></textarea>
+                <p class="error" id="step5-error">Please provide details about your limits.</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(5)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="6">
+                <h2>Why Me?</h2>
+                <p>Tell me why you’re obsessed with serving *me*. Make it good, I’m picky.</p>
+                <textarea id="motivation" placeholder="Why do you want to serve Princess Spizy? (100-300 words)" required></textarea>
+                <p class="error" id="step6-error">Please provide a response (100-300 words).</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(6)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="7">
+                <h2>Initial Tribute</h2>
+                <p>Prove you’re serious. Pick a platform and send your first tribute now.</p>
+                <select id="tribute-platform" required>
+                    <option value="" disabled selected>Select Platform</option>
+                    <option value="throne">Throne</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="tributify">Tributify</option>
+                </select>
+                <input type="text" id="tribute-proof" placeholder="Transaction ID or Proof" required>
+                <p class="error" id="step7-error">Please select a platform and provide proof.</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="nextStep(7)">Next</button>
+                </div>
+            </div>
+            <div class="form-step" data-step="8">
+                <h2>Review & Submit</h2>
+                <p>Look over your answers, sub. This is your shot to impress me. Ready to submit?</p>
+                <div id="review-content" style="background: #363642; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;"></div>
+                <p class="error" id="step8-error">Something went wrong. Please try again.</p>
+                <div class="form-buttons">
+                    <button class="form-button back" onclick="prevStep()">Back</button>
+                    <button class="form-button" onclick="submitForm()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Performance Optimizations and New Features -->
     <script>
@@ -589,6 +1135,286 @@
                     top: 0,
                     behavior: 'smooth'
                 });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const popupButtons = document.querySelectorAll('.info-button');
+            const popups = document.querySelectorAll('.popup');
+            const closeButtons = document.querySelectorAll('.close-popup');
+
+            popupButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const popupId = button.getAttribute('data-popup') + '-popup';
+                    const popup = document.getElementById(popupId);
+
+                    // Hide all other popups
+                    popups.forEach(p => {
+                        if (p !== popup) {
+                            p.classList.remove('show', 'full');
+                        }
+                    });
+
+                    // Show the selected popup
+                    if (popup) {
+                        popup.classList.add('show');
+                        // Reset to half-screen view
+                        popup.classList.remove('full');
+                    }
+                });
+            });
+
+            closeButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent click from bubbling to popup
+                    const popup = button.closest('.popup');
+                    if (popup) {
+                        popup.classList.remove('show', 'full');
+                        // Ensure smooth slide down by resetting visibility after animation
+                        setTimeout(() => {
+                            popup.style.visibility = 'hidden';
+                        }, 500); // Match transition duration
+                    }
+                });
+            });
+
+            // Expand popup to full screen on tap or scroll
+            popups.forEach(popup => {
+                let isScrolling = false;
+
+                // Tap to expand
+                popup.addEventListener('touchstart', (e) => {
+                    if (!popup.classList.contains('full')) {
+                        e.preventDefault();
+                        popup.classList.add('full');
+                    }
+                }, {
+                    passive: false
+                });
+
+                // Scroll to expand
+                popup.addEventListener('scroll', () => {
+                    if (!isScrolling && !popup.classList.contains('full')) {
+                        isScrolling = true;
+                        popup.classList.add('full');
+                        setTimeout(() => {
+                            isScrolling = false;
+                        }, 500);
+                    }
+                });
+
+                // Ensure visibility is reset when opening
+                popup.addEventListener('transitionstart', (e) => {
+                    if (popup.classList.contains('show') || popup.classList.contains('full')) {
+                        popup.style.visibility = 'visible';
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const comeServeButton = document.querySelector('#come-serve');
+            const formPopup = document.querySelector('#form-popup');
+            const closeFormButton = formPopup.querySelector('.close-popup');
+            const formSteps = formPopup.querySelectorAll('.form-step');
+            let currentStep = 1;
+            let isProcessing = false;
+
+            // Show first step
+            const showStep = (step) => {
+                formSteps.forEach(s => s.classList.remove('active'));
+                const activeStep = formPopup.querySelector(`[data-step="${step}"]`);
+                if (activeStep) {
+                    activeStep.classList.add('active');
+                    currentStep = step;
+                }
+            };
+
+            // Open popup
+            comeServeButton.addEventListener('click', () => {
+                if (isProcessing) return;
+                isProcessing = true;
+                formPopup.classList.add('show');
+                showStep(1);
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            });
+
+            // Close popup
+            closeFormButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (isProcessing) return;
+                isProcessing = true;
+                formPopup.classList.remove('show', 'full');
+                setTimeout(() => {
+                    formPopup.style.visibility = 'hidden';
+                    showStep(1); // Reset to first step
+                    resetForm();
+                    isProcessing = false;
+                }, 500);
+            });
+
+            // Start form
+            window.startForm = () => {
+                if (isProcessing) return;
+                isProcessing = true;
+                showStep(2);
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            };
+
+            // Previous step
+            window.prevStep = () => {
+                if (isProcessing || currentStep <= 2) return;
+                isProcessing = true;
+                showStep(currentStep - 1);
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            };
+
+            // Next step with validation
+            window.nextStep = (step) => {
+                if (isProcessing) return;
+                isProcessing = true;
+
+                const validateStep = () => {
+                    const error = formPopup.querySelector(`#step${step}-error`);
+                    error.classList.remove('show');
+
+                    if (step === 2) {
+                        const name = document.querySelector('#name').value.trim();
+                        const email = document.querySelector('#email').value.trim();
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!name || !email || !emailRegex.test(email)) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    } else if (step === 3) {
+                        const experience = document.querySelector('#experience').value;
+                        const details = document.querySelector('#experience-details').value.trim();
+                        const wordCount = details.split(/\s+/).filter(w => w).length;
+                        if (!experience || !details || wordCount < 100 || wordCount > 300) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    } else if (step === 4) {
+                        const frequency = document.querySelector('#tribute-frequency').value;
+                        const amount = parseFloat(document.querySelector('#tribute-amount').value);
+                        if (!frequency || isNaN(amount) || amount < 50) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    } else if (step === 5) {
+                        const limits = document.querySelector('#limits').value.trim();
+                        if (!limits) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    } else if (step === 6) {
+                        const motivation = document.querySelector('#motivation').value.trim();
+                        const wordCount = motivation.split(/\s+/).filter(w => w).length;
+                        if (!motivation || wordCount < 100 || wordCount > 300) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    } else if (step === 7) {
+                        const platform = document.querySelector('#tribute-platform').value;
+                        const proof = document.querySelector('#tribute-proof').value.trim();
+                        if (!platform || !proof) {
+                            error.classList.add('show');
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+
+                if (validateStep()) {
+                    if (step === 7) {
+                        // Populate review step
+                        const reviewContent = document.querySelector('#review-content');
+                        reviewContent.innerHTML = `
+                        <p><strong>Name:</strong> ${document.querySelector('#name').value}</p>
+                        <p><strong>Email:</strong> ${document.querySelector('#email').value}</p>
+                        <p><strong>Experience:</strong> ${document.querySelector('#experience').value}</p>
+                        <p><strong>Experience Details:</strong> ${document.querySelector('#experience-details').value}</p>
+                        <p><strong>Tribute Frequency:</strong> ${document.querySelector('#tribute-frequency').value}</p>
+                        <p><strong>Tribute Amount:</strong> $${document.querySelector('#tribute-amount').value}</p>
+                        <p><strong>Limits:</strong> ${document.querySelector('#limits').value}</p>
+                        <p><strong>Motivation:</strong> ${document.querySelector('#motivation').value}</p>
+                        <p><strong>Tribute Platform:</strong> ${document.querySelector('#tribute-platform').value}</p>
+                        <p><strong>Tribute Proof:</strong> ${document.querySelector('#tribute-proof').value}</p>
+                    `;
+                        showStep(8);
+                    } else {
+                        showStep(step + 1);
+                    }
+                }
+                setTimeout(() => {
+                    isProcessing = false;
+                }, 500);
+            };
+
+            // Submit form
+            window.submitForm = () => {
+                if (isProcessing) return;
+                isProcessing = true;
+                const error = document.querySelector('#step8-error');
+                error.classList.remove('show');
+
+                // Simulate submission (replace with actual API call if needed)
+                setTimeout(() => {
+                    alert('Application submitted! Princess Spizy will review your submission.');
+                    formPopup.classList.remove('show', 'full');
+                    setTimeout(() => {
+                        formPopup.style.visibility = 'hidden';
+                        showStep(1);
+                        resetForm();
+                        isProcessing = false;
+                    }, 500);
+                }, 1000);
+            };
+
+            // Reset form
+            const resetForm = () => {
+                const inputs = formPopup.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    if (input.type === 'text' || input.type === 'email' || input.tagName === 'TEXTAREA') {
+                        input.value = '';
+                    } else if (input.tagName === 'SELECT') {
+                        input.selectedIndex = 0;
+                    }
+                });
+                formPopup.querySelectorAll('.error').forEach(e => e.classList.remove('show'));
+                document.querySelector('#review-content').innerHTML = '';
+            };
+
+            // Expand popup on tap or scroll
+            formPopup.addEventListener('touchstart', (e) => {
+                if (!formPopup.classList.contains('full')) {
+                    e.preventDefault();
+                    formPopup.classList.add('full');
+                }
+            }, {
+                passive: false
+            });
+
+            formPopup.addEventListener('scroll', () => {
+                if (!isProcessing && !formPopup.classList.contains('full')) {
+                    isProcessing = true;
+                    formPopup.classList.add('full');
+                    setTimeout(() => {
+                        isProcessing = false;
+                    }, 500);
+                }
+            });
+
+            formPopup.addEventListener('transitionstart', () => {
+                if (formPopup.classList.contains('show') || formPopup.classList.contains('full')) {
+                    formPopup.style.visibility = 'visible';
+                }
             });
         });
     </script>
