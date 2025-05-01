@@ -37,19 +37,32 @@
 
         body {
             background: linear-gradient(135deg, var(--dark-bg) 0%, #2d2d2d 100%);
-            height: 100vh;
-
-            max-height: 100vh;
             font-family: 'Inter', sans-serif;
             color: var(--text-primary);
             line-height: 1.6;
-            overflow-x: hidden;
             padding: 30px 20px;
             background: #363642;
-            overflow-y: hidden;
             animation: gradientAnimation 15s ease infinite;
-            /* Dynamic background animation */
             background-size: 200% 200%;
+            /* Ensure full height and no cutoff on mobile Safari */
+            min-height: 100vh;
+            margin: 0;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            box-sizing: border-box;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;
+            /* Ensure content fits within safe areas */
+            min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            background: #282a36;
+            border-radius: 20px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
         }
 
         @keyframes gradientAnimation {
@@ -64,17 +77,6 @@
             100% {
                 background-position: 0% 50%;
             }
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0;
-            height: 100%;
-            max-height: 100%;
-            overflow-y: scroll;
-            background: #282a36;
-            border-radius: 20px;
         }
 
         /* Info Container */
@@ -198,14 +200,12 @@
             display: flex;
             flex-direction: column;
             align-items: start;
-
+            padding: 1rem 1.5rem;
         }
 
         .dropdown-content {
             position: relative;
-            /* Position below the dropdown */
             top: 100%;
-            /* Start directly below the dropdown trigger */
             left: 0;
             right: 0;
             margin-top: 10px;
@@ -218,7 +218,6 @@
             display: none;
             transition: max-height 0.5s ease-out, opacity 0.1s ease-out;
             z-index: 10;
-            /* Ensure it appears above other elements */
             background: transparent;
             flex-direction: column;
             justify-content: space-between;
@@ -235,7 +234,7 @@
         .link-item.sub-item {
             margin-bottom: 10px;
             border-radius: 12px;
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 0.8rem;
             background: ;
         }
 
@@ -305,6 +304,7 @@
         .link-item svg {
             width: 34px;
             height: 34px;
+            margin-right: 10px;
             stroke: var(--pink-accent);
             flex-shrink: 0;
         }
@@ -317,6 +317,33 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+        }
+
+        .paypal {
+            background: #fff;
+        }
+
+        .paylah {
+            border-radius: 10px;
+            width: 40px;
+            height: 60px;
+
+        }
+        .loyal-fans {
+                        background: #fff;
+width: 40px;
+height: 40px;
+        }
+     .loyal-fans img {
+         transform: scale(1.5);
+     }
+        .tributify {
+            background: #fff;
+        }
+
+        .paylah img {
+            border-radius: 10px;
+            transform: scale(1.6);
         }
 
         .X-image-info {
@@ -549,6 +576,7 @@
             height: 24px;
         }
 
+        /* Enhanced Come Serve Button */
         .come-serve {
             width: 100%;
             display: flex;
@@ -558,11 +586,28 @@
             margin-top: 20px;
             z-index: 2;
             position: relative;
-            background: var(--pink-accent);
             padding: 10px 30px;
             border-radius: 100px;
             user-select: none;
             cursor: pointer;
+            /* Dynamic moving gradient with vibrant pink shades */
+            background: linear-gradient(90deg, #ff69b4, #ff99cc, #ff4081, #ff99cc, #ff69b4);
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease infinite;
+            /* Subtle pulsating glow */
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 0 0 20px rgba(255, 105, 180, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .come-serve:hover {
+            /* Slight scale up on hover for extra emphasis */
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.7), 0 0 25px rgba(255, 105, 180, 0.5);
+        }
+
+        .come-serve:active {
+            transform: scale(1.01);
         }
 
         .come-serve h2 {
@@ -573,6 +618,34 @@
 
         .come-serve p {
             margin-top: -7px;
+        }
+
+        /* Gradient animation keyframes */
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Pulsating glow keyframes */
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 0 0 20px rgba(255, 105, 180, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 15px rgba(255, 105, 180, 0.7), 0 0 30px rgba(255, 105, 180, 0.5);
+            }
         }
 
         /* Popup Container */
@@ -953,7 +1026,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                     </svg>
                 </button>
-                <button class="info-button" aria-label="Rules for Tributes" data-popup="rules">
+                <button class="info-button" aria-label="X" data-popup="loyal" id="loyal-info-button">
+                    <div class="loyal-image-info">
+                        <img src="https://images.apifyusercontent.com/HGeK9XXbZt9OQbFEeWnFAwLabsB_De-GdUO1X60pSe8/rs:fill:250:250/cb:1/aHR0cHM6Ly9hcGlmeS1pbWFnZS11cGxvYWRzLXByb2QuczMudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vWUo3NmFxQXcyUXhEeG14aHgtYWN0b3ItWEhxb2ZIdjVadVB5Y3paREwtcUJram5BTGJ1OC1sb3lhbC1mYW5zLnBuZw.webp">
+                    </div>
+                </button>
+                <button class="info-button" aria-label="Rules for Tributes" data-popup="rules" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                     </svg>
@@ -1005,9 +1083,9 @@
                     </a>
                     <a href="https://www.tributify.com/godcupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item sub-item">
                         <div class="inside-item-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
-                            </svg>
+                            <div class="X-image tributify">
+                                <img src="https://dxe6dapr9jgm3.cloudfront.net/assets/8.54/build/assets/logo.80262406.webp" alt="Throne Icon">
+                            </div>
                             <div class="link-content">
                                 <div class="link-title">Tributify</div>
                                 <div class="link-description">Buy me something!</div>
@@ -1038,9 +1116,9 @@
                 <div class="dropdown-content">
                     <a href="https://paypal.com" target="_blank" rel="noopener noreferrer" class="link-item sub-item">
                         <div class="inside-item-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                            </svg>
+                            <div class="X-image paypal">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Paypal_2014_logo.png" alt="X Logo">
+                            </div>
                             <div class="link-content">
                                 <div class="link-title">PayPal</div>
                                 <div class="link-description">Send a tribute</div>
@@ -1053,9 +1131,9 @@
                     </a>
                     <a href="https://paypal.com" target="_blank" rel="noopener noreferrer" class="link-item sub-item">
                         <div class="inside-item-container">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                            </svg>
+                            <div class="X-image paylah">
+                                <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/0c/4c/40/0c4c40ff-57ee-0570-cc15-d4bcf46a5d11/AppIcon-0-0-1x_U007emarketing-0-7-0-0-sRGB-85-220.png/512x512bb.jpg" alt="X Logo">
+                            </div>
                             <div class="link-content">
                                 <div class="link-title">PayLah</div>
                                 <div class="link-description">Send a tribute</div>
@@ -1072,9 +1150,9 @@
             <!-- Loyal Fans Link -->
             <a href="https://www.loyalfans.com/cupidsvyz" target="_blank" rel="noopener noreferrer" class="link-item">
                 <div class="inside-item-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                    </svg>
+                    <div class="X-image loyal-fans">
+                        <img src="https://images.apifyusercontent.com/HGeK9XXbZt9OQbFEeWnFAwLabsB_De-GdUO1X60pSe8/rs:fill:250:250/cb:1/aHR0cHM6Ly9hcGlmeS1pbWFnZS11cGxvYWRzLXByb2QuczMudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vWUo3NmFxQXcyUXhEeG14aHgtYWN0b3ItWEhxb2ZIdjVadVB5Y3paREwtcUJram5BTGJ1OC1sb3lhbC1mYW5zLnBuZw.webp">
+                    </div>
                     <div class="link-content">
                         <div class="link-title">Loyal Fans</div>
                         <div class="link-description">Join my exclusive content</div>
@@ -1224,7 +1302,7 @@
                 <input type="hidden" name="recipient" value="princessspizy@example.com">
                 <div class="form-step" data-step="1">
                     <h2>Ready to Serve?</h2>
-                    <p>So, you think you’ve got what it takes to serve Princess Spizy? This isn’t a game, so approach correct. I expect loyalty, respect, and *generous* tributes—$33.33 minimum to even get my attention. You’ll need to prove you’re serious with every step of this application. Only the best get to kneel at my feet, so don’t waste my time. Ready to start? Hit the button and show me that you mean it.</p>
+                    <p>So, you think you’ve got what it takes to serve Princess Spizy? This isn’t a game, so approach correctly. I expect loyalty, respect, and <b>generous</b> tributes—$33.33 minimum to even get my attention. You’ll need to prove you’re serious with every step of this application. Only the best get to kneel at my feet, so don’t waste my time. Ready to start? Hit the button and show me that you mean it.</p>
                     <div class="form-buttons">
                         <button type="button" class="form-button" onclick="startForm()">Sell your soul</button>
                     </div>
@@ -1361,6 +1439,11 @@
             const XinfoButton = document.querySelector('[data-popup="X"]');
             XinfoButton.addEventListener('click', () => {
                 window.open('https://x.com/cupidsvyz', '_blank'); // Open URL in new tab
+            });
+
+            const loyalInfoButton = document.querySelector('[data-popup="loyal"]');
+            loyalInfoButton.addEventListener('click', () => {
+                window.open('https://www.loyalfans.com/cupidsvyz', '_blank'); // Open URL in new tab
             });
 
             // Popup Logic
