@@ -1,806 +1,791 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Princess Spizy - Divine Admin Portal</title>
+    <title>Princess Spizy Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://pbs.twimg.com/profile_images/1645649868839620614/M9NcKC1l_400x400.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="./firebase-config.js"></script>
     <style>
-      :root {
-    --pink-accent: #ff69b4;
-    --gold-accent: #d4af37;
-    --dark-bg: #1a1a1a;
-    --dark-secondary: #282a36;
-    --text-primary: #f8f8f8;
-    --text-secondary: #b0b0b0;
-    --gradient-accent: linear-gradient(45deg, #ff69b4, #ff85c0, #d4af37);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.6);
-    --border-radius-sm: 8px;
-    --border-radius-md: 12px;
-    --border-radius-lg: 20px;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(135deg, var(--dark-bg) 0%, #2d2d2d 100%);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-primary);
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-}
-
-.sparkle-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff69b4" stroke-width="1"%3E%3Cpath d="M12 17.25l-1.5 4.5 1.5-4.5zm0-10.5l-1.5-4.5 1.5 4.5zm5.25 5.25l4.5-1.5-4.5 1.5zm-10.5 0l-4.5-1.5 4.5 1.5z"/%3E%3C/svg%3E') repeat;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.admin-container {
-    display: flex;
-    max-width: 1400px;
-    margin: 20px auto;
-    min-height: calc(100vh - 40px);
-    gap: 1rem;
-}
-
-.sidebar {
-    width: 280px;
-    background: var(--dark-secondary);
-    border-right: 2px solid var(--pink-accent);
-    padding: 2rem;
-    transition: transform 0.3s ease;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-}
-
-.sidebar.hidden {
-    transform: translateX(-100%);
-}
-
-.sidebar.active {
-    transform: translateX(0);
-}
-
-.sidebar-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1001;
-    background: var(--gradient-accent);
-    padding: 0.5rem;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    box-shadow: var(--shadow-sm);
-}
-
-.sidebar h2 {
-    font-family: 'Playfair Display', serif;
-    color: var(--gold-accent);
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar li {
-    margin-bottom: 1rem;
-}
-
-.sidebar a,
-.sidebar button {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 0.75rem;
-    border-radius: var(--border-radius-sm);
-    transition: background 0.2s ease, transform 0.2s ease;
-    background: none;
-    border: none;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-}
-
-.sidebar a:hover,
-.sidebar button:hover {
-    background: rgba(255, 105, 180, 0.2);
-    transform: translateX(5px);
-}
-
-.sidebar svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--gold-accent);
-}
-
-.main-content {
-    flex: 1;
-    padding: 2rem;
-    background: var(--dark-secondary);
-    border-radius: var(--border-radius-lg);
-    margin-left: 300px;
-    box-shadow: var(--shadow-md);
-    transition: margin-left 0.3s ease;
-}
-
-.password-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 400px;
-    background: var(--dark-secondary);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
-    margin: 20px auto;
-    max-width: 500px;
-    transition: opacity 0.3s ease;
-    padding: 2rem;
-}
-
-.password-screen h1 {
-    font-family: 'Playfair Display', serif;
-    color: var(--gold-accent);
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-}
-
-.password-screen input {
-    padding: 0.75rem 1rem;
-    background: #363642;
-    border: 2px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.password-screen input:focus {
-    outline: none;
-    border-color: var(--gold-accent);
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
-}
-
-.password-screen button {
-    padding: 0.75rem 2rem;
-    background: var(--gradient-accent);
-    border: none;
-    border-radius: 60px;
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.password-screen button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
-}
-
-.password-screen p.error {
-    color: #ff4040;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    display: none;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.header h1 {
-    font-family: 'Playfair Display', serif;
-    color: var(--gold-accent);
-    font-size: 2.5rem;
-}
-
-.controls {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.search-bar {
-    position: relative;
-    width: 200px;
-}
-
-.search-bar input {
-    padding: 0.5rem 2.5rem 0.5rem 1rem;
-    background: #363642;
-    border: 1px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    width: 100%;
-    font-size: 0.9rem;
-}
-
-.search-bar input:focus {
-    outline: none;
-    border-color: var(--gold-accent);
-}
-
-.search-bar svg {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
-    stroke: var(--pink-accent);
-}
-
-.controls select {
-    padding: 0.5rem;
-    background: #363642;
-    border: 1px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1.2rem;
-    padding-right: 2rem;
-}
-
-.controls select:focus {
-    outline: none;
-    border-color: var(--gold-accent);
-}
-
-.controls button {
-    padding: 0.5rem 1rem;
-    background: var(--gradient-accent);
-    border: none;
-    border-radius: 60px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.controls button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-}
-
-.bulk-actions {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-
-.bulk-actions button {
-    padding: 0.5rem 1rem;
-    background: var(--gradient-accent);
-    border: none;
-    border-radius: 60px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.bulk-actions button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-}
-
-.roles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 1.5rem;
-}
-
-.role-card {
-    background: #363642;
-    border: 2px solid var(--pink-accent);
-    border-radius: var(--border-radius-md);
-    padding: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    cursor: move;
-    position: relative;
-    animation: fadeIn 0.5s ease;
-}
-
-.role-card.dragging {
-    opacity: 0.5;
-    transform: scale(0.95);
-}
-
-.role-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
-}
-
-.role-card .bulk-select {
-    accent-color: var(--pink-accent);
-}
-
-.role-card .icon-preview {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.role-card .icon-preview svg {
-    width: 32px;
-    height: 32px;
-    stroke: var(--gold-accent);
-}
-
-.role-card .icon-preview button {
-    padding: 0.25rem 0.75rem;
-    background: rgba(255, 105, 180, 0.2);
-    border: none;
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.role-card .icon-preview button:hover {
-    background: rgba(255, 105, 180, 0.4);
-}
-
-.role-card input,
-.role-card select,
-.role-card textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 0.75rem;
-    background: #282a36;
-    border: 1px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.role-card input:focus,
-.role-card select:focus,
-.role-card textarea:focus {
-    outline: none;
-    border-color: var(--gold-accent);
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
-}
-
-.role-card input.invalid,
-.role-card textarea.invalid {
-    border-color: #ff4040;
-}
-
-.role-card textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.role-card select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1.2rem;
-    padding-right: 2rem;
-}
-
-.role-card button {
-    background: var(--gradient-accent);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 60px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.role-card button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modal.show {
-    display: flex;
-}
-
-.modal-content {
-    background: var(--dark-secondary);
-    border: 2px solid var(--pink-accent);
-    border-radius: var(--border-radius-md);
-    padding: 2rem;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content h2 {
-    font-family: 'Playfair Display', serif;
-    color: var(--gold-accent);
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-}
-
-.modal-content p {
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-}
-
-.modal-content input,
-.modal-content select,
-.modal-content textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    background: #282a36;
-    border: 1px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-    color: var(--text-primary);
-    font-size: 0.9rem;
-}
-
-.modal-content input:focus,
-.modal-content select:focus,
-.modal-content textarea:focus {
-    outline: none;
-    border-color: var(--gold-accent);
-}
-
-.modal-content select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1.2rem;
-    padding-right: 2rem;
-}
-
-.modal-content button {
-    padding: 0.5rem 1rem;
-    background: var(--gradient-accent);
-    border: none;
-    border-radius: 60px;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    cursor: pointer;
-    margin: 0 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.modal-content button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-}
-
-.icon-picker {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 0.5rem;
-    max-height: 300px;
-    overflow-y: auto;
-    padding: 0.5rem;
-    background: #363642;
-    border: 1px solid var(--pink-accent);
-    border-radius: var(--border-radius-sm);
-}
-
-.icon-option {
-    padding: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    cursor: pointer;
-    border-radius: var(--border-radius-sm);
-    transition: background 0.2s ease;
-}
-
-.icon-option:hover {
-    background: rgba(255, 105, 180, 0.2);
-}
-
-.icon-option svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--gold-accent);
-}
-
-.icon-option span {
-    font-size: 0.7rem;
-    text-align: center;
-    color: var(--text-primary);
-}
-
-.notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--dark-secondary);
-    border: 2px solid var(--pink-accent);
-    padding: 1rem;
-    border-radius: var(--border-radius-sm);
-    display: none;
-    z-index: 1001;
-    animation: slideIn 0.3s ease;
-    max-width: 300px;
-}
-
-.notification.show {
-    display: block;
-}
-
-.notification button {
-    background: none;
-    border: none;
-    color: var(--pink-accent);
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-}
-
-.loading-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-    z-index: 1002;
-}
-
-.loading-overlay.show {
-    display: flex;
-}
-
-.loading-spinner {
-    border: 4px solid #f8f8f8;
-    border-top: 4px solid var(--pink-accent);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@media (max-width: 1024px) {
-    .main-content {
-        margin-left: 0;
-    }
-
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .sidebar-toggle {
-        display: block;
-    }
-
-    .roles-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .admin-container {
-        flex-direction: column;
-        margin: 10px;
-    }
-
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 2px solid var(--pink-accent);
-    }
-
-    .main-content {
-        padding: 1rem;
-        border-radius: var(--border-radius-md);
-    }
-
-    .password-screen {
-        margin: 10px;
-        padding: 1.5rem;
-        max-width: 90%;
-    }
-
-    .password-screen h1 {
-        font-size: 2rem;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .header h1 {
-        font-size: 2rem;
-    }
-
-    .controls {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-bar {
-        width: 100%;
-    }
-
-    .search-bar input {
-        width: 100%;
-    }
-
-    .controls select,
-    .controls button {
-        width: 100%;
-    }
-
-    .bulk-actions {
-        flex-direction: column;
-    }
-
-    .bulk-actions button {
-        width: 100%;
-    }
-
-    .roles-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .role-card {
-        padding: 1rem;
-    }
-
-    .modal-content {
-        padding: 1.5rem;
-        width: 95%;
-    }
-
-    .modal-content h2 {
-        font-size: 1.5rem;
-    }
-
-    .notification {
-        bottom: 10px;
-        right: 10px;
-        max-width: 90%;
-    }
-}
-
-@media (max-width: 480px) {
-    .password-screen h1 {
-        font-size: 1.75rem;
-    }
-
-    .password-screen input,
-    .password-screen button {
-        max-width: 100%;
-    }
-
-    .sidebar h2 {
-        font-size: 1.25rem;
-    }
-
-    .sidebar a,
-    .sidebar button {
-        font-size: 0.9rem;
-        padding: 0.5rem;
-    }
-
-    .header h1 {
-        font-size: 1.75rem;
-    }
-
-    .role-card .icon-preview svg {
-        width: 24px;
-        height: 24px;
-    }
-
-    .role-card input,
-    .role-card select,
-    .role-card textarea,
-    .modal-content input,
-    .modal-content select,
-    .modal-content textarea {
-        font-size: 0.85rem;
-    }
-
-    .icon-picker {
-        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    }
-
-    .icon-option svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .icon-option span {
-        font-size: 0.6rem;
-    }
-}
+        :root {
+            --pink-accent: #ff69b4;
+            --gold-accent: #d4af37;
+            --dark-bg: #1e1e1e;
+            --dark-secondary: #2a2a36;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --border-radius: 12px;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.2);
+            --glass-bg: rgba(42, 42, 54, 0.7);
+            --glass-blur: blur(12px);
+            --transition: 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--dark-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sparkle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ff69b4" stroke-width="1"%3E%3Cpath d="M12 17.25l-1.5 4.5 1.5-4.5zm0-10.5l-1.5-4.5 1.5 4.5zm5.25 5.25l4.5-1.5-4.5 1.5zm-10.5 0l-4.5-1.5 4.5 1.5z"/%3E%3C/svg%3E') repeat;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .admin-container {
+            display: flex;
+            max-width: 1280px;
+            margin: 1.5rem auto;
+            gap: 1.5rem;
+            min-height: calc(100vh - 3rem);
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            position: sticky;
+            top: 1.5rem;
+            height: fit-content;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar a,
+        .sidebar button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .sidebar a:hover,
+        .sidebar button:hover {
+            background: rgba(255, 105, 180, 0.15);
+        }
+
+        .sidebar svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--gold-accent);
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--pink-accent);
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            background: var(--dark-secondary);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .password-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .password-screen h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-accent);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .password-screen input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            transition: border-color var(--transition);
+        }
+
+        .password-screen input:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+        }
+
+        .password-screen button {
+            padding: 0.75rem 1.5rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .password-screen button:hover {
+            background: #ff85c0;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+
+        .password-screen p.error {
+            color: #ff4040;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-accent);
+            font-size: 1.75rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 180px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.5rem 2rem 0.5rem 0.75rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+        }
+
+        .search-bar svg {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            stroke: var(--pink-accent);
+        }
+
+        .controls select {
+            padding: 0.5rem 2rem 0.5rem 0.75rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1rem;
+        }
+
+        .controls select:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+        }
+
+        .controls button {
+            padding: 0.5rem 1rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .controls button:hover {
+            background: #ff85c0;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .bulk-actions button {
+            padding: 0.5rem 1rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .bulk-actions button:hover {
+            background: #ff85c0;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .role-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            transition: transform var(--transition), box-shadow var(--transition);
+            cursor: move;
+        }
+
+        .role-card.dragging {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+
+        .role-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .role-card .bulk-select {
+            accent-color: var(--pink-accent);
+        }
+
+        .role-card .icon-preview {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .role-card .icon-preview svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--gold-accent);
+        }
+
+        .role-card .icon-preview button {
+            padding: 0.25rem 0.75rem;
+            background: transparent;
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+
+        .role-card .icon-preview button:hover {
+            background: rgba(255, 105, 180, 0.15);
+        }
+
+        .role-card input,
+        .role-card select,
+        .role-card textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 0.75rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: border-color var(--transition);
+        }
+
+        .role-card input:focus,
+        .role-card select:focus,
+        .role-card textarea:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+        }
+
+        .role-card input.invalid,
+        .role-card textarea.invalid {
+            border-color: #ff4040;
+        }
+
+        .role-card textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .role-card select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1rem;
+            padding-right: 2rem;
+        }
+
+        .role-card button {
+            padding: 0.5rem 1rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .role-card button:hover {
+            background: #ff85c0;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: left;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content input,
+        .modal-content select,
+        .modal-content textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 0.75rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .modal-content input:focus,
+        .modal-content select:focus,
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-content select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d4af37'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1rem;
+            padding-right: 2rem;
+        }
+
+        .modal-content button {
+            padding: 0.5rem 1rem;
+            background: var(--pink-accent);
+            border: none;
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .modal-content button:hover {
+            background: #ff85c0;
+            box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+
+        .icon-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: 0.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            background: var(--dark-secondary);
+            border: 1px solid var(--pink-accent);
+            border-radius: var(--border-radius);
+        }
+
+        .icon-option {
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: background var(--transition);
+        }
+
+        .icon-option:hover {
+            background: rgba(255, 105, 180, 0.15);
+        }
+
+        .icon-option svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--gold-accent);
+        }
+
+        .icon-option span {
+            font-size: 0.75rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--pink-accent);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            display: none;
+            z-index: 1001;
+            max-width: 280px;
+            font-size: 0.875rem;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification button {
+            background: none;
+            border: none;
+            color: var(--pink-accent);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-spinner {
+            border: 3px solid var(--text-primary);
+            border-top: 3px solid var(--pink-accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 1280px) {
+            .admin-container {
+                max-width: 960px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .admin-container {
+                flex-direction: column;
+                margin: 1rem;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 260px;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-top: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                margin: 0.5rem;
+            }
+
+            .password-screen {
+                margin: 1rem;
+                padding: 1.5rem;
+                max-width: 90%;
+            }
+
+            .password-screen h1 {
+                font-size: 1.75rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .controls select,
+            .controls button {
+                width: 100%;
+            }
+
+            .bulk-actions {
+                flex-direction: column;
+            }
+
+            .bulk-actions button {
+                width: 100%;
+            }
+
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 1rem;
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .password-screen h1 {
+                font-size: 1.5rem;
+            }
+
+            .sidebar h2 {
+                font-size: 1.25rem;
+            }
+
+            .sidebar a,
+            .sidebar button {
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+
+            .role-card {
+                padding: 1rem;
+            }
+
+            .role-card .icon-preview svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .icon-picker {
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            }
+
+            .icon-option svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .icon-option span {
+                font-size: 0.65rem;
+            }
+
+            .notification {
+                max-width: 90%;
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="sparkle-bg"></div>
     <div class="password-screen" id="password-screen">
-        <h1 class="text-3xl font-bold mb-6" style="font-family: 'Playfair Display', serif; color: var(--gold-accent);">Divine Admin Portal</h1>
+        <h1 class="text-3xl font-bold mb-6" style="font-family: 'Playfair Display', serif; color: var(--gold-accent);">Princess Spizy Portal</h1>
         <input type="password" id="admin-password" placeholder="Enter Sacred Password" onkeydown="if(event.key === 'Enter') verifyPassword()">
         <button onclick="verifyPassword()">Enter the Realm</button>
         <p class="error" id="password-error">Incorrect password. Please try again.</p>
@@ -809,12 +794,18 @@ body {
         <div class="sidebar" id="sidebar">
             <h2>Princess Spizy</h2>
             <ul>
-                <li><a href="#" onclick="showSection('roles')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg> Manage Roles</a></li>
-                <li><button onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg> Logout</button></li>
+                <li><a href="#" onclick="showSection('roles')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                        </svg> Manage Roles</a></li>
+                <li><button onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                        </svg> Logout</button></li>
             </ul>
         </div>
         <div class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
         </div>
         <div class="main-content">
             <div class="header">
@@ -822,7 +813,9 @@ body {
                 <div class="controls">
                     <div class="search-bar">
                         <input type="text" id="search-roles" placeholder="Search roles..." oninput="filterRoles()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--pink-accent)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--pink-accent)" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
                     </div>
                     <select id="status-filter" onchange="filterRoles()">
                         <option value="all">All Statuses</option>
@@ -844,7 +837,9 @@ body {
         <div class="modal-content">
             <h2>Add New Role</h2>
             <div class="icon-preview" id="add-icon-preview">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
                 <button onclick="openIconPicker('add')">Change Icon</button>
             </div>
             <input type="text" id="add-title" placeholder="Role Title" required>
@@ -887,17 +882,46 @@ body {
         let iconPickerContext = '';
         let updateTimeout = null;
 
-        const heroicons = [
-            { name: 'user', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />' },
-            { name: 'gift', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />' },
-            { name: 'heart', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />' },
-            { name: 'briefcase', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />' },
-            { name: 'star', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />' },
-            { name: 'shield-check', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />' },
-            { name: 'sparkles', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />' },
-            { name: 'chat-bubble', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM12 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM15.375 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM2.25 6.75c0-2.07 1.68-3.75 3.75-3.75h12c2.07 0 3.75 1.68 3.75 3.75v9c0 2.07-1.68 3.75-3.75 3.75h-12c-2.07 0-3.75-1.68-3.75-3.75v-9Zm3.75-.75a.75.75 0 0 0-.75.75v9a.75.75 0 0 0 .75.75h12a.75.75 0 0 0 .75-.75v-9a.75.75 0 0 0-.75-.75h-12Z" />' },
-            { name: 'crown', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M11.25 3.75 8.25 6.75l-3-3 1.5 6.75h10.5l1.5-6.75-3 3-3-3ZM3.75 18.75h16.5M3.75 15.75h16.5" />' },
-            { name: 'gem', path: '<path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75 3 6.75l4.5 3 4.5-3 4.5 3 4.5-3-4.5-3H7.5Zm-3 7.5 3 4.5h9l3-4.5" />' }
+        const heroicons = [{
+                name: 'user',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />'
+            },
+            {
+                name: 'gift',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />'
+            },
+            {
+                name: 'heart',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />'
+            },
+            {
+                name: 'briefcase',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z" />'
+            },
+            {
+                name: 'star',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />'
+            },
+            {
+                name: 'shield-check',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />'
+            },
+            {
+                name: 'sparkles',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />'
+            },
+            {
+                name: 'chat-bubble',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM12 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM15.375 12.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0-3a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM2.25 6.75c0-2.07 1.68-3.75 3.75-3.75h12c2.07 0 3.75 1.68 3.75 3.75v9c0 2.07-1.68 3.75-3.75 3.75h-12c-2.07 0-3.75-1.68-3.75-3.75v-9Zm3.75-.75a.75.75 0 0 0-.75.75v9a.75.75 0 0 0 .75.75h12a.75.75 0 0 0 .75-.75v-9a.75.75 0 0 0-.75-.75h-12Z" />'
+            },
+            {
+                name: 'crown',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M11.25 3.75 8.25 6.75l-3-3 1.5 6.75h10.5l1.5-6.75-3 3-3-3ZM3.75 18.75h16.5M3.75 15.75h16.5" />'
+            },
+            {
+                name: 'gem',
+                path: '<path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75 3 6.75l4.5 3 4.5-3 4.5 3 4.5-3-4.5-3H7.5Zm-3 7.5 3 4.5h9l3-4.5" />'
+            }
         ];
 
         function showSpinner() {
@@ -1065,7 +1089,13 @@ body {
             }
             showSpinner();
             const newRoleKey = database.ref('roles').push().key;
-            const newRole = { icon: selectedIcon, title, description, status, takenBy: status === 'available' ? '' : takenBy };
+            const newRole = {
+                icon: selectedIcon,
+                title,
+                description,
+                status,
+                takenBy: status === 'available' ? '' : takenBy
+            };
             database.ref(`roles/${newRoleKey}`).set(newRole).then(() => {
                 hideSpinner();
                 closeModal('add-role-modal');
@@ -1146,7 +1176,10 @@ body {
             if (!deleteKeys.length) return;
             showSpinner();
             const updates = {};
-            const deletedRoles = deleteKeys.map(key => ({ key, data: rolesData[key] }));
+            const deletedRoles = deleteKeys.map(key => ({
+                key,
+                data: rolesData[key]
+            }));
             deleteKeys.forEach(key => database.ref(`roles/${key}`).remove());
             database.ref().update(updates).then(() => {
                 hideSpinner();
@@ -1165,7 +1198,10 @@ body {
             });
             window.undoDelete = () => {
                 showSpinner();
-                deletedRoles.forEach(({ key, data }) => {
+                deletedRoles.forEach(({
+                    key,
+                    data
+                }) => {
                     database.ref(`roles/${key}`).set(data);
                 });
                 hideSpinner();
@@ -1266,4 +1302,5 @@ body {
         });
     </script>
 </body>
+
 </html>
